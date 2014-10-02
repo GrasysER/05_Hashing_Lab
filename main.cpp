@@ -1,6 +1,9 @@
 #include "hashPrimes.h"
-#include "HashTable.h"
 #include <string>
+
+unsigned long hash(std::string k);
+
+#include "HashTable.h"
 #include <iostream>
 #include <sstream>
 
@@ -15,8 +18,8 @@
 unsigned long hash(std::string k){
   unsigned long m = hashPrimes[NUM_HASH_PRIMES-2];
   unsigned long ret = 0;
-  for(int i=0;i<k.size();i++){
-    ret = (256*ret + k[i])%m;
+  for(unsigned int i=0;i<k.size();i++){
+    ret = (256*ret + 103*k[i])%m;
   }
   return ret;
 }
