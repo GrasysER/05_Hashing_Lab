@@ -165,7 +165,7 @@ void testGrow(){
     return;
   }
 
-  for(int j=0; j<=i;j++){
+  for(unsigned int j=0; j<=i;j++){
     std::ostringstream ss;
     ss << j;
     if(!testHash.keyExists(ss.str())){
