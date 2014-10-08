@@ -17,7 +17,7 @@
 */
 
 template <class Key, class T>
-class HashTable : public USet <Key, T> {
+class HashTable : public USet < Key, T > {
 private:
 	class HashRecord {
 	public:
@@ -70,6 +70,7 @@ private:
 	unsigned long calcIndex(Key k);
 
 	unsigned long numItems; //Number of items in the hash table
+	unsigned long grows;
 
 	//Note: Ordinarily, these OUGHT to be private. In this case I have
 	// made them public for easy of testing.
@@ -86,81 +87,113 @@ public:
 #include <string>
 
 template <class Key, class T>
-HashTable<Key,T>::HashTable(){
-	T* backingArray = new backingArray[hashPrimes[0]];
-
+HashTable<Key, T>::HashTable(){
 	numItems = 0;
 	numRemoved = 0;
-	backingArraySize = hashPrimes[0];
-	
-	for (unsinged int i = 0; i < backingArraySize; i++){
+	grows = 0;
+
+	backingArraySize = hashPrimes[grows];
+	backingArray = new HashRecord[backingArraySize];
+
+	for (unsigned int i = 0; i < backingArraySize; i++){
 		backingArray[i].isNull = true;
 		backingArray[i].isDel = false;
 	}
 }
 
 template <class Key, class T>
-HashTable<Key,T>::~HashTable() {
-	delete backingArray[];
+HashTable<Key, T>::~HashTable() {
+	delete[] backingArray;
 	backingArray = NULL;
 }
 
 template <class Key, class T>
-unsigned long HashTable<Key,T>::calcIndex(Key k){
-	for (unsigned int i = hash(k)%backingArraySize; i < backingArraySize; i++){
-		if (i = k){
-			return i;
+unsigned long HashTable<Key, T>::calcIndex(Key k){
+	for (unsigned long i = hash(k); true; i++){
+		if (backingArray[i % backingArraySize].k == k || backingArray[i % backingArraySize].isNull){
+			return (i % backingArraySize);
 		}
 	}
 
-	return hash(k)%backingArraySize; //This indicates failure, since it is an impossible value
+	return hash(k) % backingArraySize; //This indicates failure, since it is an impossible value
 }
 
 template <class Key, class T>
-void HashTable<Key,T>::add(Key k, T x){
-	if (numItems + numRemoved >= backingArraySize/2){
+void HashTable<Key, T>::add(Key k, T x){
+	if (numItems + numRemoved >= backingArraySize / 2){
 		grow();
+	}
+
+	unsigned long search = calcIndex(k);
+	for (search; search < backingArraySize; search++){
+		if (backingArray[search].isNull || backingArray[search].isDel){
+			backingArray[search].k = k;
+			backingArray[search].x = x;
+			backingArray[search].isNull = false;
+			backingArray[search].isDel = false;
+			numItems++;
+			break;
+		}
 	}
 }
 
 template <class Key, class T>
-void HashTable<Key,T>::remove(Key k){
-	backingArray[k].isDel = true;
-	numRemoved++;
+void HashTable<Key, T>::remove(Key k){
+	if (keyExists(k)){
+		backingArray[calcIndex(k)].isDel = true;
+		numRemoved++;
+		numItems--;
+	}
+	else 
+		backingArray[calcIndex(k)].isDel = true;
+
 }
 
 template <class Key, class T>
-T HashTable<Key,T>::find(Key k){
-	calcIndex(k);
-	T dummy;
-	return dummy;
+T HashTable<Key, T>::find(Key k){
+	if (keyExists(k)){
+		return backingArray[calcIndex(k)].x;
+	}
+
+	throw std::string("No such key in hash table");
 }
 
 template <class Key, class T>
-bool HashTable<Key,T>::keyExists(Key k){
-	if (backingArray[k].isNull == true){
+bool HashTable<Key, T>::keyExists(Key k){
+	if (backingArray[calcIndex(k)].isNull == true){
 		return false;
 	}
 
-	else if (backingArray[k].isNull == false){
+	else if (backingArray[calcIndex(k)].isNull == false){
 		return true;
 	}
 
-	return false;
+	return true;
 
 }
 
 template <class Key, class T>
-unsigned long HashTable<Key,T>::size(){
+unsigned long HashTable<Key, T>::size(){
 	return numItems;
 }
 
 template <class Key, class T>
-void HashTable<Key,T>::grow(){
-	T* backingArray = new backingArray[hashPrimes[0]];
+void HashTable<Key, T>::grow(){
+	grows++;
+	numRemoved = 0;
+	backingArraySize = hashPrimes[grows];
+
+	HashRecord* oldRecord = new HashRecord[backingArraySize];
+	backingArray = new HashRecord[backingArraySize];
 
 
+	for (unsigned long i = 0; i < hashPrimes[grows - 1]; i++){
+		if (!oldRecord[i].isNull && !oldRecord[i].isDel){
+			numItems++;
+			add(oldRecord[i].k, oldRecord[i].x);
+		}
+	}
 
-	backingArraySize = 1;
+	delete[] oldRecord;
 }
 
