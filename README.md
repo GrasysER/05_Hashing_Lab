@@ -3,6 +3,8 @@
 
 Implement a hash table in C++
 
+*remove and grow are not 100% correct.
+*I couldn't figure out what was wrong in time and had to start working on portfolio.
 Requirements
 ------------
 
@@ -21,7 +23,6 @@ Questions
 
 #### 1. Which of the above requirements work, and which do not? For each requirement, write a brief response.
 
-*remove and grow are not 100% correct. I couldn't figure out what was wrong in time and had to start working on portfolio.
 1. All 4 are constant time
 2. I believe add is reasonably fast, but I'm not 100% sure.
 3. Grow is 0(n)
@@ -34,3 +35,4 @@ I believe the design you used is better because it seperates the workload and ma
 #### 3. What is one question that confused you about this exercise, or one piece of advice you would share with students next semester?
 
 I was very confused about how . and -> are to be used and I think it should be one of the first things to be explained. 
+
