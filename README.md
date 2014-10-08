@@ -21,14 +21,15 @@ Questions
 
 #### 1. Which of the above requirements work, and which do not? For each requirement, write a brief response.
 
+*remove and grow are not 100% correct. I couldn't figure out what was wrong in time and had to start working on portfolio.
 1. All 4 are constant time
-2. I believe add is reasonably fast, but I'm
+2. I believe add is reasonably fast, but I'm not 100% sure.
 3. Grow is 0(n)
 4. Both the constructor, destructor, and grow allocate and deallocate memory correctly
 
 #### 2. I decided to use two function (`keyExists` and `find`) to enable lookup of keys. Another option would have been to have `find` return a `T*`, which would be `NULL` if an item with matching key is not found. Which design do you think would be better? Explain your reasoning. You may notice that the designers of C++ made the same decision I did when they designed http://www.cplusplus.com/reference/unordered_map/unordered_map/
 
-I believe the design you used is better because it seperates the workload and makes each seperate method faster. Also returning null if no matching key is found poses other problems such as potentially confusing the user that the has never been used.
+I believe the design you used is better because it seperates the workload and makes each seperate method faster. Also returning null if no matching key is found poses other problems (I can't remember a better reason, but I know it's bad) such as potentially confusing the user that the index has never been used.
 
 #### 3. What is one question that confused you about this exercise, or one piece of advice you would share with students next semester?
 
