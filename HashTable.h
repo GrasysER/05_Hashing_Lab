@@ -81,9 +81,9 @@ public:
 
 
 
-
+//Code from class and myself
 //You will need this so you can make a string to throw in
-// remove
+//remove
 #include <string>
 
 template <class Key, class T>
