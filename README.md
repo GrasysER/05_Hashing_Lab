@@ -3,8 +3,6 @@
 
 Implement a hash table in C++
 
-*remove and grow are not 100% correct.
-*I couldn't figure out what was wrong in time and had to start working on portfolio.
 Requirements
 ------------
 
@@ -24,7 +22,7 @@ Questions
 #### 1. Which of the above requirements work, and which do not? For each requirement, write a brief response.
 
 1. All 4 are constant time
-2. I believe add is reasonably fast, but I'm not 100% sure.
+2. I believe add is reasonably fast when grow is not called
 3. Grow is 0(n)
 4. Both the constructor, destructor, and grow allocate and deallocate memory correctly
 
